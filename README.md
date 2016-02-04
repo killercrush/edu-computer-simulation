@@ -1,8 +1,4 @@
-# README #
-
-This README would normally document whatever steps are necessary to get your application up and running.
-
-### What is this repository for? ###
+### РГР по компьютерному моделированию ###
 
 * Задание 11 
 На участок поступают пуассоновские потоки узлов двух типов с параметрами λ1 мин-1 и λ2 мин-1 для первого и второго, соответственно (табл. 11).
@@ -10,23 +6,3 @@ This README would normally document whatever steps are necessary to get your app
 Длительность каждой операции зависит от количества задействованных на ней рабочих. Всего на участке может быть задействовано не более N рабочих. 
 Прибыль от реализации одного готового изделия составляет S1 единиц стоимости, но, если после завершения подгонки узлов до момента их сборки проходит более T минут, прибыль от реализации изделия уменьшается вдвое. Заработная плата каждого рабочего - S2 единиц стоимости в час.
 Определить такое количество занятых в производстве рабочих и их распределение между операциями, которое бы обеспечило максимальную экономическую эффективность производства
-
-### How do I get set up? ###
-
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
