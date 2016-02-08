@@ -84,12 +84,21 @@
 
 
     function Unit(id, time_arriv) {
-        this.id = id;        
+        this.id = id;
         this.need_adj = false;
         this.time_arriv = time_arriv;
-        this.time_st1 = {beg: undefined, end: undefined};
-        this.time_st2 = {beg: undefined, end: undefined};
-        this.time_st3 = {beg: undefined, end: undefined};
+        this.time_st1 = {
+            beg: undefined,
+            end: undefined
+        };
+        this.time_st2 = {
+            beg: undefined,
+            end: undefined
+        };
+        this.time_st3 = {
+            beg: undefined,
+            end: undefined
+        };
 
         this.status = function () {
             return "Unit #" + id + " status: " +
@@ -150,18 +159,18 @@
         this.timer = 0;
         var product = undefined;
         var queue = [];
-        this.getQueue = function() {
+        this.getQueue = function () {
             return queue;
         }
-        this.check = function() {
+        this.check = function () {
             if (in_queue.length == 0) {
                 return;
             }
             var check_product = in_queue.shift();
-            
+
             check_product.u1.need_adj = Math.random() <= adj_p1;
             check_product.u2.need_adj = Math.random() <= adj_p2;
-            
+
             if (check_product.u1.need_adj || check_product.u2.need_adj) {
                 queue.push(check_product);
             } else {
@@ -180,16 +189,16 @@
                 }
                 return;
             }
-            
+
             if (queue.length == 0) {
                 return;
             }
-            
+
             product = queue.shift();
             console.assert(product.u1.need_adj || product.u2.need_adj, "both unit do not need adjusting");
             console.assert(this.timer === 0, "timer is not zero");
             if (product.u1.need_adj) this.timer += params1.duration + getRandomInt(-params1.disp, params1.disp);
-            if (product.u2.need_adj) this.timer += params2.duration + getRandomInt(-params2.disp, params2.disp);     
+            if (product.u2.need_adj) this.timer += params2.duration + getRandomInt(-params2.disp, params2.disp);
             console.log(product.print() + " is on stage 2 (" + product.u1.need_adj + ", " + product.u2.need_adj + ")");
             product.u1.time_st2.beg = curr_time;
             product.u2.time_st2.beg = curr_time;
@@ -237,7 +246,7 @@
         }
     }
 
-    function start_simulation (idx1, idx2, idx3, idx4) {
+    function start_simulation(idx1, idx2, idx3, idx4, res) {
         var minutes = 0,
             unit_queue1 = [],
             unit_queue2 = [],
@@ -245,65 +254,78 @@
             after_st2_queue = [],
             res_queue = [];
 
-        var first_stage  = new FirstStage (T1[idx1], unit_queue1, unit_queue2, after_st1_queue, S1),
-            second_stage = new SecondStage(T2[idx2], p1,  T3[idx3], p2, after_st1_queue, after_st2_queue),
-            third_stage  = new ThirdStage (T4[idx4], after_st2_queue, res_queue);
-        
+        var first_stage = new FirstStage(T1[idx1], unit_queue1, unit_queue2, after_st1_queue, S1),
+            second_stage = new SecondStage(T2[idx2], p1, T3[idx3], p2, after_st1_queue, after_st2_queue),
+            third_stage = new ThirdStage(T4[idx4], after_st2_queue, res_queue);
+
         var work_duration = 480;
         var sim_count = 10;
-        while(sim_count-- !== 0){
-          while (minutes < work_duration) {
-              if (minutes % 30 == 0) {
-                  unit_queue1.push(new Unit('u1_' + minutes, minutes));
-                  unit_queue2.push(new Unit('u2_' + minutes, minutes));
-              }
 
-              first_stage.process(minutes);
-              second_stage.check();
-              second_stage.process(minutes);
-              third_stage.process(minutes);
-              
-              minutes++;
-          }
+        var mean_salary = 0,
+            //mean_profit = 0,
+            sim_num = sim_count;
+        while (sim_num-- !== 0) {
+            while (minutes < work_duration) {
+                if (minutes % 30 == 0) {
+                    unit_queue1.push(new Unit('u1_' + minutes, minutes));
+                    unit_queue2.push(new Unit('u2_' + minutes, minutes));
+                }
 
-          // console.log("unit_queue1: ", unit_queue1);
-          // console.log("unit_queue2: ", unit_queue2);
-          // console.log("after_st1_queue: ", after_st1_queue);
-          // console.log("need adj queue: ", second_stage.getQueue());
-          // console.log("after_st2_queue: ", after_st2_queue);
-          // console.log("res_queue: ", res_queue);
+                first_stage.process(minutes);
+                second_stage.check();
+                second_stage.process(minutes);
+                third_stage.process(minutes);
 
-          res_queue.forEach(function(product) {
-            if (product.u1.time_st3.end - product.u1.time_st1.end > T) product.price /= 2;
-            // console.log( "st1: " + product.u1.time_st1.beg + " - " +  product.u1.time_st1.end +
-            //             " st2: " + product.u1.time_st2.beg + " - " +  product.u1.time_st2.end +
-            //             " st3: " + product.u1.time_st3.beg + " - " +  product.u1.time_st3.end + 
-            //             " price: " + product.price);
-          });
+                minutes++;
+            }
 
-          var profit = res_queue.reduce(function (p, c) {
-            return p + c.price;
-          }, 0);
-          //console.log("profit: " + profit);
+            // console.log("unit_queue1: ", unit_queue1);
+            // console.log("unit_queue2: ", unit_queue2);
+            // console.log("after_st1_queue: ", after_st1_queue);
+            // console.log("need adj queue: ", second_stage.getQueue());
+            // console.log("after_st2_queue: ", after_st2_queue);
+            // console.log("res_queue: ", res_queue);
 
-          var all_workers_count = T1[0].workers_count + T2[1].workers_count + T3[1].workers_count + T4[3].workers_count;
-          console.assert(all_workers_count <= N, "more  than N workers");
+            res_queue.forEach(function (product) {
+                if (product.u1.time_st3.end - product.u1.time_st1.end > T) product.price /= 2;
+                // console.log( "st1: " + product.u1.time_st1.beg + " - " +  product.u1.time_st1.end +
+                //             " st2: " + product.u1.time_st2.beg + " - " +  product.u1.time_st2.end +
+                //             " st3: " + product.u1.time_st3.beg + " - " +  product.u1.time_st3.end + 
+                //             " price: " + product.price);
+            });
 
-          var salary = (work_duration / 60) * S2 * all_workers_count;
-          //console.log("workers count: " + all_workers_count + ", salary: " + salary);
+            var profit = res_queue.reduce(function (p, c) {
+                return p + c.price;
+            }, 0);
+            //console.log("profit: " + profit);
+
+            var all_workers_count = T1[idx1].workers_count + T2[idx2].workers_count + T3[idx3].workers_count + T4[idx4].workers_count;
+            console.assert(all_workers_count <= N, "more  than N workers");
+
+            var salary = (work_duration / 60) * S2 * all_workers_count;
+            //console.log("workers count: " + all_workers_count + ", salary: " + salary);
+            //mean_profit += profit;
+            mean_salary += salary;
         }
-
+        //mean_profit /= sim_count;
+        mean_salary /= sim_count;
+        
+        res.push("workers count: st1 " + T1[idx1].workers_count + 
+                    ", st2_1 " + T2[idx2].workers_count +
+                    ", st2_2 " + T3[idx3].workers_count +
+                    ", st_3 "  + T4[idx4].workers_count + "\n" +
+                    " profit: " + profit + " salary " + mean_salary);
     }
 
-
-
-    var T1_idx, T2_idx, T3_idx, T4_idx = 0;
-
-    while(T1_idx++ < T1.length)
-      while(T2_idx++ < T2.length)
-        while(T3_idx++ < T3.length)
-          while(T4_idx++ < T4.length)
-            start_simulation(T1_idx, T2_idx, T3_idx, T4_idx);
+    var simulation_result = [];
+    for (var T1_idx = 0; T1_idx < T1.length; T1_idx++)
+       for (var T2_idx = 0; T2_idx < T2.length; T2_idx++)
+            for (var T3_idx = 0; T3_idx < T3.length; T3_idx++)
+                for (var T4_idx = 0; T4_idx < T4.length; T4_idx++)
+                    start_simulation(T1_idx, T2_idx, T3_idx, T4_idx, simulation_result);
+    simulation_result.forEach(function(res) {
+        console.log(res);
+    });
 
 
 
