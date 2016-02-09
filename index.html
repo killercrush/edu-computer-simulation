@@ -1,96 +1,98 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8">
     <title>РГР Компьютерное моделирование</title>
     <!--script src="script.js"></script-->
     <link rel="stylesheet" href="material.css">
-	
-	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  </head>
-  <body>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+
+<body>
     <!-- Always shows a header, even in smaller screens. -->
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-      <header class="mdl-layout__header">
-        <div class="mdl-layout__header-row">
-          <!-- Title -->
-          <span class="mdl-layout-title">Компьютерное моделирование</span>
-          <!-- Add spacer, to align navigation to the right -->
-          <div class="mdl-layout-spacer"></div>
-          <!-- Navigation. We hide it in small screens. -->
-        </div>
-      </header>
-      <main class="mdl-layout__content">
-        <div class="page-content"><!-- Your content goes here -->
-			<!-- Wide card with share menu button -->
-			<style>
-			.demo-card-wide.mdl-card {
-			  width: 90%;
-			  margin: 0 auto;
-			}
-			.demo-card-wide > .mdl-card__title {
-			  /*height: 176px;*/
-			}
-			</style>
+        <header class="mdl-layout__header">
+            <div class="mdl-layout__header-row">
+                <!-- Title -->
+                <span class="mdl-layout-title">Компьютерное моделирование</span>
+                <!-- Add spacer, to align navigation to the right -->
+                <div class="mdl-layout-spacer"></div>
+                <!-- Navigation. We hide it in small screens. -->
+            </div>
+        </header>
+        <main class="mdl-layout__content">
+            <div class="page-content">
+                <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+                    <!-- Your content goes here -->
+                    <!-- Wide card with share menu button -->
+                    <style>
+                        .demo-card-wide.mdl-card {
+                            /*width: 90%;
+                            margin: 0 auto;*/
+                        }
+                        
+                        .demo-card-wide > .mdl-card__title {
+                            /*height: 176px;*/
+                        }
+                    </style>
 
-			<div class="demo-card-wide mdl-card mdl-shadow--2dp">
-			  <div class="mdl-card__title">
-			    <h2 class="mdl-card__title-text">Задание 11</h2>
-			  </div>
-			  <div class="mdl-card__supporting-text">
-			    На участок поступают пуассоновские потоки узлов двух типов с параметрами λ1 мин-1 и λ2 мин-1 для первого и второго, соответственно (табл. 11).
-Первая операция - операция предварительной подгонки - начинается в том случае, если в наличии есть по одному узлу каждого типа и завершена подгонка предыдущих узлов. Длительность этой операции Т1 минут. Дальше с вероятностью p1 над узлом первого типа и р2 над узлом второго типа производится операция доводки, которая длится Т2 и Т3 минут, соответственно. После этого узлы поступают на операцию сборки, которая начинается после поступления узлов обоих типов, которые ранее были взаимно подогнаны. Сборка длится Т4 минут.
-Длительность каждой операции зависит от количества задействованных на ней рабочих. Всего на участке может быть задействовано не более N рабочих. 
-Прибыль от реализации одного готового изделия составляет S1 единиц стоимости, но, если после завершения подгонки узлов до момента их сборки проходит более T минут, прибыль от реализации изделия уменьшается вдвое. Заработная плата каждого рабочего - S2 единиц стоимости в час.
-Определить такое количество занятых в производстве рабочих и их распределение между операциями, которое бы обеспечило максимальную экономическую эффективность производства
-			  </div>
-			  <div class="mdl-card__actions mdl-card--border">
-			    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                    <div class="demo-card-wide mdl-card mdl-shadow--2dp">
+                        <div class="mdl-card__title">
+                            <h2 class="mdl-card__title-text">Задание 11</h2>
+                        </div>
+                        <div class="mdl-card__supporting-text">
+                            На участок поступают пуассоновские потоки узлов двух типов с параметрами λ1 мин-1 и λ2 мин-1 для первого и второго, соответственно (табл. 11). Первая операция - операция предварительной подгонки - начинается в том случае, если в наличии есть по одному узлу каждого типа и завершена подгонка предыдущих узлов. Длительность этой операции Т1 минут. Дальше с вероятностью p1 над узлом первого типа и р2 над узлом второго типа производится операция доводки, которая длится Т2 и Т3 минут, соответственно. После этого узлы поступают на операцию сборки, которая начинается после поступления узлов обоих типов, которые ранее были взаимно подогнаны. Сборка длится Т4 минут. Длительность каждой операции зависит от количества задействованных на ней рабочих. Всего на участке может быть задействовано не более N рабочих. Прибыль от реализации одного готового изделия составляет S1 единиц стоимости, но, если после завершения подгонки узлов до момента их сборки проходит более T минут, прибыль от реализации изделия уменьшается вдвое. Заработная плата каждого рабочего - S2 единиц стоимости в час. Определить такое количество занятых в производстве рабочих и их распределение между операциями, которое бы обеспечило максимальную экономическую эффективность производства
+                        </div>
+                        <div class="mdl-card__actions mdl-card--border">
+                            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
 			      Начать
 			    </a>
-			  </div>
-			</div>
+                        </div>
+                    </div>
 
-			<table class="mdl-data-table mdl-js-data-table">
-  <thead>
-    <tr>
-      <th class="mdl-data-table__cell--non-numeric">Name</th>
-      <th class="mdl-data-table__cell--non-numeric">Nickname</th>
-      <th>Age</th>
-      <th class="mdl-data-table__cell--non-numeric">Living?</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="mdl-data-table__cell--non-numeric">John Lennon</td>
-      <td class="mdl-data-table__cell--non-numeric">The smart one</td>
-      <td>40</td>
-      <td class="mdl-data-table__cell--non-numeric">No</td>
-    </tr>
-    <tr>
-      <td class="mdl-data-table__cell--non-numeric">Paul McCartney</td>
-      <td class="mdl-data-table__cell--non-numeric">The cute one</td>
-      <td>73</td>
-      <td class="mdl-data-table__cell--non-numeric">Yes</td>
-    </tr>
-    <tr>
-      <td class="mdl-data-table__cell--non-numeric">George Harrison</td>
-      <td class="mdl-data-table__cell--non-numeric">The shy one</td>
-      <td>58</td>
-      <td class="mdl-data-table__cell--non-numeric">No</td>
-    </tr>
-    <tr>
-      <td class="mdl-data-table__cell--non-numeric">Ringo Starr</td>
-      <td class="mdl-data-table__cell--non-numeric">The funny one</td>
-      <td>74</td>
-      <td class="mdl-data-table__cell--non-numeric">Yes</td>
-    </tr>
-  </tbody>
-</table>
-
-        </div>
-      </main>
+                    <table class="mdl-data-table mdl-js-data-table">
+                        <thead>
+                            <tr>
+                                <th class="mdl-data-table__cell--non-numeric">Name</th>
+                                <th class="mdl-data-table__cell--non-numeric">Nickname</th>
+                                <th>Age</th>
+                                <th class="mdl-data-table__cell--non-numeric">Living?</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="mdl-data-table__cell--non-numeric">John Lennon</td>
+                                <td class="mdl-data-table__cell--non-numeric">The smart one</td>
+                                <td>40</td>
+                                <td class="mdl-data-table__cell--non-numeric">No</td>
+                            </tr>
+                            <tr>
+                                <td class="mdl-data-table__cell--non-numeric">Paul McCartney</td>
+                                <td class="mdl-data-table__cell--non-numeric">The cute one</td>
+                                <td>73</td>
+                                <td class="mdl-data-table__cell--non-numeric">Yes</td>
+                            </tr>
+                            <tr>
+                                <td class="mdl-data-table__cell--non-numeric">George Harrison</td>
+                                <td class="mdl-data-table__cell--non-numeric">The shy one</td>
+                                <td>58</td>
+                                <td class="mdl-data-table__cell--non-numeric">No</td>
+                            </tr>
+                            <tr>
+                                <td class="mdl-data-table__cell--non-numeric">Ringo Starr</td>
+                                <td class="mdl-data-table__cell--non-numeric">The funny one</td>
+                                <td>74</td>
+                                <td class="mdl-data-table__cell--non-numeric">Yes</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+        </main>
     </div>
-  <script src="material.js"></script>
-  </body>
+    <script src="material.js"></script>
+</body>
+
 </html>
