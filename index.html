@@ -8,6 +8,17 @@
     <link rel="stylesheet" href="material.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <style>
+        .demo-card-wide.mdl-card,
+        .table-result {
+            width: 90%;
+            margin: 0 auto;
+        }
+        
+        .demo-card-wide > .mdl-card__title {
+            /*height: 176px;*/
+        }
+    </style>
 </head>
 
 <body>
@@ -25,19 +36,6 @@
         <main class="mdl-layout__content">
             <div class="page-content">
                 <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
-                    <!-- Your content goes here -->
-                    <!-- Wide card with share menu button -->
-                    <style>
-                        .demo-card-wide.mdl-card {
-                            /*width: 90%;
-                            margin: 0 auto;*/
-                        }
-                        
-                        .demo-card-wide > .mdl-card__title {
-                            /*height: 176px;*/
-                        }
-                    </style>
-
                     <div class="demo-card-wide mdl-card mdl-shadow--2dp">
                         <div class="mdl-card__title">
                             <h2 class="mdl-card__title-text">Задание 11</h2>
@@ -52,40 +50,20 @@
                         </div>
                     </div>
 
-                    <table class="mdl-data-table mdl-js-data-table">
+                    <table class="table-result mdl-data-table mdl-js-data-table">
                         <thead>
                             <tr>
-                                <th class="mdl-data-table__cell--non-numeric">Name</th>
-                                <th class="mdl-data-table__cell--non-numeric">Nickname</th>
-                                <th>Age</th>
-                                <th class="mdl-data-table__cell--non-numeric">Living?</th>
+                                <th class="mdl-data-table__cell">№ п/п</th>
+                                <th class="mdl-data-table__cell">Кол. раб. 1</th>
+                                <th class="mdl-data-table__cell">Кол. раб. 2</th>
+                                <th class="mdl-data-table__cell">Кол. раб. 3</th>
+                                <th class="mdl-data-table__cell">Кол. раб. 4</th>
+                                <th class="mdl-data-table__cell">Прибыль</th>
+                                <th class="mdl-data-table__cell">Зарплата</th>
+                                <th class="mdl-data-table__cell">Соотношение</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="mdl-data-table__cell--non-numeric">John Lennon</td>
-                                <td class="mdl-data-table__cell--non-numeric">The smart one</td>
-                                <td>40</td>
-                                <td class="mdl-data-table__cell--non-numeric">No</td>
-                            </tr>
-                            <tr>
-                                <td class="mdl-data-table__cell--non-numeric">Paul McCartney</td>
-                                <td class="mdl-data-table__cell--non-numeric">The cute one</td>
-                                <td>73</td>
-                                <td class="mdl-data-table__cell--non-numeric">Yes</td>
-                            </tr>
-                            <tr>
-                                <td class="mdl-data-table__cell--non-numeric">George Harrison</td>
-                                <td class="mdl-data-table__cell--non-numeric">The shy one</td>
-                                <td>58</td>
-                                <td class="mdl-data-table__cell--non-numeric">No</td>
-                            </tr>
-                            <tr>
-                                <td class="mdl-data-table__cell--non-numeric">Ringo Starr</td>
-                                <td class="mdl-data-table__cell--non-numeric">The funny one</td>
-                                <td>74</td>
-                                <td class="mdl-data-table__cell--non-numeric">Yes</td>
-                            </tr>
                         </tbody>
                     </table>
                 </section>
@@ -93,6 +71,7 @@
         </main>
     </div>
     <script src="material.js"></script>
+    <script src="script.js"></script>
 </body>
 
 </html>

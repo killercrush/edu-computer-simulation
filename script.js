@@ -247,6 +247,9 @@
     }
 
     function start_simulation(idx1, idx2, idx3, idx4, res) {
+        var all_workers_count = T1[idx1].workers_count + T2[idx2].workers_count + T3[idx3].workers_count + T4[idx4].workers_count;
+        if (all_workers_count > N) return;
+
         var minutes = 0,
             unit_queue1 = [],
             unit_queue2 = [],
@@ -299,8 +302,7 @@
             }, 0);
             //console.log("profit: " + profit);
 
-            var all_workers_count = T1[idx1].workers_count + T2[idx2].workers_count + T3[idx3].workers_count + T4[idx4].workers_count;
-            console.assert(all_workers_count <= N, "more  than N workers");
+
 
             var salary = (work_duration / 60) * S2 * all_workers_count;
             //console.log("workers count: " + all_workers_count + ", salary: " + salary);
@@ -309,25 +311,48 @@
         }
         //mean_profit /= sim_count;
         mean_salary /= sim_count;
-        
-        res.push("workers count: st1 " + T1[idx1].workers_count + 
-                    ", st2_1 " + T2[idx2].workers_count +
-                    ", st2_2 " + T3[idx3].workers_count +
-                    ", st_3 "  + T4[idx4].workers_count + "\n" +
-                    " profit: " + profit + " salary " + mean_salary);
+
+        //        res.push("workers count: st1 " + T1[idx1].workers_count + 
+        //                    ", st2_1 " + T2[idx2].workers_count +
+        //                    ", st2_2 " + T3[idx3].workers_count +
+        //                    ", st_3 "  + T4[idx4].workers_count + "\n" +
+        //                    " profit: " + profit + " salary " + mean_salary);
+        res.push({
+            w_c1: T1[idx1].workers_count,
+            w_c2: T2[idx2].workers_count,
+            w_c3: T3[idx3].workers_count,
+            w_c4: T4[idx4].workers_count,
+            profit: profit,
+            salary: mean_salary
+        });
     }
 
     var simulation_result = [];
     for (var T1_idx = 0; T1_idx < T1.length; T1_idx++)
-       for (var T2_idx = 0; T2_idx < T2.length; T2_idx++)
+        for (var T2_idx = 0; T2_idx < T2.length; T2_idx++)
             for (var T3_idx = 0; T3_idx < T3.length; T3_idx++)
                 for (var T4_idx = 0; T4_idx < T4.length; T4_idx++)
                     start_simulation(T1_idx, T2_idx, T3_idx, T4_idx, simulation_result);
-    simulation_result.forEach(function(res) {
+    simulation_result.forEach(function (res) {
         console.log(res);
     });
 
+    simulation_result.sort(function (a, b) {
+        return b.profit - a.profit;
+    });
+    var res_table = document.getElementsByTagName('tbody')[0];
+    simulation_result.forEach(function (el, idx) {
+        var row = res_table.insertRow(idx);
+        row.insertCell(0).innerHTML = idx + 1;
+        row.insertCell(1).innerHTML = el.w_c1;
+        row.insertCell(2).innerHTML = el.w_c2;
+        row.insertCell(3).innerHTML = el.w_c3;
+        row.insertCell(4).innerHTML = el.w_c4;
+        row.insertCell(5).innerHTML = el.profit.toFixed(2);
+        row.insertCell(6).innerHTML = el.salary;
+        row.insertCell(7).innerHTML = (el.profit / el.salary).toFixed(2);
 
+    });
 
 
 
