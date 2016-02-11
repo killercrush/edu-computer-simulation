@@ -9,9 +9,13 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
-        .demo-card-wide.mdl-card,
+        .demo-card-wide.mdl-card {
+            width: 80%;
+            margin: 0 auto;
+        }
+        
         .table-result {
-            width: 90%;
+            width: 100%;
             margin: 0 auto;
         }
         
@@ -35,7 +39,7 @@
         </header>
         <main class="mdl-layout__content">
             <div class="page-content">
-                <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+                <section class="mdl-grid mdl-shadow--2dp">
                     <div class="demo-card-wide mdl-card mdl-shadow--2dp">
                         <div class="mdl-card__title">
                             <h2 class="mdl-card__title-text">Задание 11</h2>
@@ -44,12 +48,15 @@
                             На участок поступают пуассоновские потоки узлов двух типов с параметрами λ1 мин-1 и λ2 мин-1 для первого и второго, соответственно (табл. 11). Первая операция - операция предварительной подгонки - начинается в том случае, если в наличии есть по одному узлу каждого типа и завершена подгонка предыдущих узлов. Длительность этой операции Т1 минут. Дальше с вероятностью p1 над узлом первого типа и р2 над узлом второго типа производится операция доводки, которая длится Т2 и Т3 минут, соответственно. После этого узлы поступают на операцию сборки, которая начинается после поступления узлов обоих типов, которые ранее были взаимно подогнаны. Сборка длится Т4 минут. Длительность каждой операции зависит от количества задействованных на ней рабочих. Всего на участке может быть задействовано не более N рабочих. Прибыль от реализации одного готового изделия составляет S1 единиц стоимости, но, если после завершения подгонки узлов до момента их сборки проходит более T минут, прибыль от реализации изделия уменьшается вдвое. Заработная плата каждого рабочего - S2 единиц стоимости в час. Определить такое количество занятых в производстве рабочих и их распределение между операциями, которое бы обеспечило максимальную экономическую эффективность производства
                         </div>
                         <div class="mdl-card__actions mdl-card--border">
-                            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" onClick="comp_model()">
 			      Начать
 			    </a>
                         </div>
                     </div>
-
+                </section>
+                <section class="mdl-grid mdl-shadow--2dp">
+                    <div id="p1" class="mdl-progress mdl-js-progress"></div>
+                    <hr>
                     <table class="table-result mdl-data-table mdl-js-data-table">
                         <thead>
                             <tr>
@@ -58,9 +65,9 @@
                                 <th class="mdl-data-table__cell">Кол. раб. 2</th>
                                 <th class="mdl-data-table__cell">Кол. раб. 3</th>
                                 <th class="mdl-data-table__cell">Кол. раб. 4</th>
-                                <th class="mdl-data-table__cell">Прибыль</th>
+                                <th class="mdl-data-table__cell">Доход</th>
                                 <th class="mdl-data-table__cell">Зарплата</th>
-                                <th class="mdl-data-table__cell">Соотношение</th>
+                                <th class="mdl-data-table__cell">Прибыль</th>
                             </tr>
                         </thead>
                         <tbody>

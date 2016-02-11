@@ -1,5 +1,7 @@
-(function comp_model() {
+function comp_model() {
     'use strict';
+
+    var debug = false;
 
     function getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -134,8 +136,8 @@
                     this.unit1.time_st1.end = curr_time;
                     this.unit2.time_st1.end = curr_time;
                     out.push(new Product(this.unit1, this.unit2, price));
-                    console.log(this.unit1.print() + " is finished stage 1");
-                    console.log(this.unit2.print() + " is finished stage 1");
+                    if (debug) console.log(this.unit1.print() + " is finished stage 1");
+                    if (debug) console.log(this.unit2.print() + " is finished stage 1");
                 }
                 return;
             }
@@ -147,8 +149,8 @@
             this.unit2 = in2.shift();
             this.unit1.time_st1.beg = curr_time;
             this.unit2.time_st1.beg = curr_time;
-            console.log(this.unit1.print() + " is on stage 1");
-            console.log(this.unit2.print() + " is on stage 1");
+            if (debug) console.log(this.unit1.print() + " is on stage 1");
+            if (debug) console.log(this.unit2.print() + " is on stage 1");
             this.in_process = true;
         }
     }
@@ -182,7 +184,7 @@
                 this.timer--;
                 if (this.timer == 0) {
                     this.in_process = false;
-                    console.log(product.print() + " is finished stage 2");
+                    if (debug) console.log(product.print() + " is finished stage 2");
                     product.u1.time_st2.end = curr_time;
                     product.u2.time_st2.end = curr_time;
                     out_queue.push(product);
@@ -199,21 +201,11 @@
             console.assert(this.timer === 0, "timer is not zero");
             if (product.u1.need_adj) this.timer += params1.duration + getRandomInt(-params1.disp, params1.disp);
             if (product.u2.need_adj) this.timer += params2.duration + getRandomInt(-params2.disp, params2.disp);
-            console.log(product.print() + " is on stage 2 (" + product.u1.need_adj + ", " + product.u2.need_adj + ")");
+            if (debug) console.log(product.print() + " is on stage 2 (" + product.u1.need_adj + ", " + product.u2.need_adj + ")");
             product.u1.time_st2.beg = curr_time;
             product.u2.time_st2.beg = curr_time;
             this.in_process = true;
         }
-
-        //  this.process = function() {
-        //    if (this.in_process) {
-        //      this.timer--;
-        //      if (this.timer == 0) {
-        //        this.in_process = false;
-        //        return this.unit;
-        //      }
-        //    }
-        //  }
     }
 
     // Сборка
@@ -226,7 +218,7 @@
                 this.timer--;
                 if (this.timer == 0) {
                     this.in_process = false;
-                    console.log(product.print() + " is finished stage 3");
+                    if (debug) console.log(product.print() + " is finished stage 3");
                     product.u1.time_st3.end = curr_time;
                     product.u2.time_st3.end = curr_time;
                     out_queue.push(product);
@@ -239,7 +231,7 @@
             console.assert(this.timer === 0, "timer is not zero");
             this.timer = params.duration + getRandomInt(-params.disp, params.disp);
             product = in_queue.shift();
-            console.log(product.print() + " is on stage 3, time left: " + this.timer);
+            if (debug) console.log(product.print() + " is on stage 3, time left: " + this.timer);
             product.u1.time_st3.beg = curr_time;
             product.u2.time_st3.beg = curr_time;
             this.in_process = true;
@@ -262,12 +254,13 @@
             third_stage = new ThirdStage(T4[idx4], after_st2_queue, res_queue);
 
         var work_duration = 480;
-        var sim_count = 10;
+        var sim_count = 100;
 
-        var mean_salary = 0,
-            //mean_profit = 0,
+        var mean_profit = 0,
             sim_num = sim_count;
         while (sim_num-- !== 0) {
+            minutes = 0;
+            mean_profit = 0;
             while (minutes < work_duration) {
                 if (minutes % 30 == 0) {
                     unit_queue1.push(new Unit('u1_' + minutes, minutes));
@@ -282,59 +275,52 @@
                 minutes++;
             }
 
-            // console.log("unit_queue1: ", unit_queue1);
-            // console.log("unit_queue2: ", unit_queue2);
-            // console.log("after_st1_queue: ", after_st1_queue);
-            // console.log("need adj queue: ", second_stage.getQueue());
-            // console.log("after_st2_queue: ", after_st2_queue);
-            // console.log("res_queue: ", res_queue);
-
             res_queue.forEach(function (product) {
                 if (product.u1.time_st3.end - product.u1.time_st1.end > T) product.price /= 2;
-                // console.log( "st1: " + product.u1.time_st1.beg + " - " +  product.u1.time_st1.end +
-                //             " st2: " + product.u1.time_st2.beg + " - " +  product.u1.time_st2.end +
-                //             " st3: " + product.u1.time_st3.beg + " - " +  product.u1.time_st3.end + 
-                //             " price: " + product.price);
             });
 
             var profit = res_queue.reduce(function (p, c) {
                 return p + c.price;
             }, 0);
-            //console.log("profit: " + profit);
 
-
-
-            var salary = (work_duration / 60) * S2 * all_workers_count;
-            //console.log("workers count: " + all_workers_count + ", salary: " + salary);
-            //mean_profit += profit;
-            mean_salary += salary;
+            mean_profit += profit;
         }
-        //mean_profit /= sim_count;
-        mean_salary /= sim_count;
 
-        //        res.push("workers count: st1 " + T1[idx1].workers_count + 
-        //                    ", st2_1 " + T2[idx2].workers_count +
-        //                    ", st2_2 " + T3[idx3].workers_count +
-        //                    ", st_3 "  + T4[idx4].workers_count + "\n" +
-        //                    " profit: " + profit + " salary " + mean_salary);
+        mean_profit /= sim_count;
+
         res.push({
             w_c1: T1[idx1].workers_count,
             w_c2: T2[idx2].workers_count,
             w_c3: T3[idx3].workers_count,
             w_c4: T4[idx4].workers_count,
-            profit: profit,
-            salary: mean_salary
+            revenue: mean_profit,
+            salary: (work_duration / 60) * S2 * all_workers_count,
+            profit: mean_profit - ((work_duration / 60) * S2 * all_workers_count)
         });
     }
 
     var simulation_result = [];
+    var inc = 100 / (T1.length + T2.length + T3.length + T4.length);
+    var progress = 0;
+                        document.querySelector('#p1').addEventListener('mdl-componentupgraded', function () {
+                        this.MaterialProgress.setProgress(90);
+                    });
     for (var T1_idx = 0; T1_idx < T1.length; T1_idx++)
         for (var T2_idx = 0; T2_idx < T2.length; T2_idx++)
             for (var T3_idx = 0; T3_idx < T3.length; T3_idx++)
-                for (var T4_idx = 0; T4_idx < T4.length; T4_idx++)
+                for (var T4_idx = 0; T4_idx < T4.length; T4_idx++) {
                     start_simulation(T1_idx, T2_idx, T3_idx, T4_idx, simulation_result);
+
+                    //                    setTimeout(function () {
+                    //                        document.querySelector('#p1').addEventListener('mdl-componentupgraded', function () {
+                    //                            this.MaterialProgress.setProgress(progress += inc);
+                    //                        });
+                    //                    }, 1);
+
+                }
+
     simulation_result.forEach(function (res) {
-        console.log(res);
+        if (debug) console.log(res);
     });
 
     simulation_result.sort(function (a, b) {
@@ -348,12 +334,12 @@
         row.insertCell(2).innerHTML = el.w_c2;
         row.insertCell(3).innerHTML = el.w_c3;
         row.insertCell(4).innerHTML = el.w_c4;
-        row.insertCell(5).innerHTML = el.profit.toFixed(2);
+        row.insertCell(5).innerHTML = el.revenue.toFixed(2);
         row.insertCell(6).innerHTML = el.salary;
-        row.insertCell(7).innerHTML = (el.profit / el.salary).toFixed(2);
+        row.insertCell(7).innerHTML = el.profit.toFixed(2);
 
     });
 
 
 
-})();
+};
