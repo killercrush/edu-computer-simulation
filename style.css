@@ -4,5 +4,15 @@
 }
 
 .mdl-progress {
-	width: 100%;
+    width: 100%;
+}
+
+.mdl-textfield {
+    width: 125px;
+    margin-left: 7px;
+}
+
+.mdl-button {
+    display: block;
+    margin-left: 7px;
 }

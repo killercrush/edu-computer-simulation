@@ -258,17 +258,30 @@ function comp_model() {
             third_stage = new ThirdStage(T4[idx4], after_st2_queue, res_queue);
 
         var work_duration = 480;
-        var sim_count = 1000;
-
+        var sim_count = parseInt(document.querySelector('#inp_sim_count').value);
+        sim_count = sim_count > 0 ? sim_count : 100;
+        console.log(sim_count);
         var mean_profit = 0,
             sim_num = sim_count;
-        while (sim_num-- !== 0) {
+        function next_arriv(t, lambda) {
+            var r = Math.random();
+            var tau = -1 / lambda * Math.log(r);
+            return t + tau;
+        }
+
+        while (sim_num-- != 0) {
             minutes = 0;
             mean_profit = 0;
+            var unit1_t = next_arriv(0, lam1),
+                unit2_t = next_arriv(0, lam2);
             while (minutes < work_duration) {
-                if (minutes % 30 == 0) {
+                if (minutes == Math.round(unit1_t)) {
                     unit_queue1.push(new Unit('u1_' + minutes, minutes));
+                    unit1_t = next_arriv(unit1_t, lam1);
+                }
+                if (minutes == Math.round(unit2_t)) {    
                     unit_queue2.push(new Unit('u2_' + minutes, minutes));
+                    unit2_t = next_arriv(unit2_t, lam2);
                 }
 
                 first_stage.process(minutes);
