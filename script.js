@@ -238,7 +238,11 @@ function comp_model() {
         }
     }
 
-    function start_simulation(idx1, idx2, idx3, idx4, res) {
+    function start_simulation(params, res) {
+        var idx1 = params.T1_idx,
+            idx2 = params.T2_idx,
+            idx3 = params.T3_idx,
+            idx4 = params.T4_idx;
         var all_workers_count = T1[idx1].workers_count + T2[idx2].workers_count + T3[idx3].workers_count + T4[idx4].workers_count;
         if (all_workers_count > N) return;
 
@@ -254,7 +258,7 @@ function comp_model() {
             third_stage = new ThirdStage(T4[idx4], after_st2_queue, res_queue);
 
         var work_duration = 480;
-        var sim_count = 100;
+        var sim_count = 1000;
 
         var mean_profit = 0,
             sim_num = sim_count;
@@ -300,34 +304,37 @@ function comp_model() {
     }
 
     var simulation_result = [];
-    var inc = 100 / (T1.length + T2.length + T3.length + T4.length);
+    var inc = 100 / (T1.length * T2.length * T3.length * T4.length);
     var progress = 0;
-                        document.querySelector('#p1').addEventListener('mdl-componentupgraded', function () {
-                        this.MaterialProgress.setProgress(90);
-                    });
+    var params_comb = [];
+    var params_idx = 0;
     for (var T1_idx = 0; T1_idx < T1.length; T1_idx++)
         for (var T2_idx = 0; T2_idx < T2.length; T2_idx++)
             for (var T3_idx = 0; T3_idx < T3.length; T3_idx++)
-                for (var T4_idx = 0; T4_idx < T4.length; T4_idx++) {
-                    start_simulation(T1_idx, T2_idx, T3_idx, T4_idx, simulation_result);
+                for (var T4_idx = 0; T4_idx < T4.length; T4_idx++)
+                  params_comb.push({T1_idx: T1_idx, T2_idx: T2_idx, T3_idx: T3_idx, T4_idx: T4_idx});
 
-                    //                    setTimeout(function () {
-                    //                        document.querySelector('#p1').addEventListener('mdl-componentupgraded', function () {
-                    //                            this.MaterialProgress.setProgress(progress += inc);
-                    //                        });
-                    //                    }, 1);
 
-                }
+setTimeout(function run() {
+  console.log(params_comb[params_idx]);
+  start_simulation(params_comb[params_idx], simulation_result);
+  progress += inc;
+  document.querySelector('#p1').MaterialProgress.setProgress(progress);
+  if (++params_idx >= params_comb.length) {
+    fill_table(simulation_result);
+  }
+  else {    
+    setTimeout(run, 100);
+  }
 
-    simulation_result.forEach(function (res) {
-        if (debug) console.log(res);
-    });
+}, 100);
 
-    simulation_result.sort(function (a, b) {
+function fill_table (data) {
+      data.sort(function (a, b) {
         return b.profit - a.profit;
     });
     var res_table = document.getElementsByTagName('tbody')[0];
-    simulation_result.forEach(function (el, idx) {
+    data.forEach(function (el, idx) {
         var row = res_table.insertRow(idx);
         row.insertCell(0).innerHTML = idx + 1;
         row.insertCell(1).innerHTML = el.w_c1;
@@ -339,6 +346,8 @@ function comp_model() {
         row.insertCell(7).innerHTML = el.profit.toFixed(2);
 
     });
+}
+
 
 
 
